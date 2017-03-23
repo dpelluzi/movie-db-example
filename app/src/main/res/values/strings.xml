@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MovieDbExample</string>
     <string name="error_connection">Connection error</string>
+    <string name="text_rating">Rating %.2f</string>
 </resources>
