@@ -6,9 +6,9 @@ import com.dpelluzi.moviedbexample.interfaces.MovieDbApi;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -43,40 +43,43 @@ public class MovieRepository {
 
     public void getNowPlayingMovies(final GetMoviesCallback callback, final float minRating) {
         mMovieDbApi.getNowPlayingMovies(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API)
-                .enqueue(new Callback<MovieListResult>() {
-
-            @Override
-            public void onResponse(Call<MovieListResult> call, Response<MovieListResult> response) {
-                if (response.isSuccessful()) {
-                    List<Movie> movies = new MovieFilter().filterByRating(response.body().results, minRating);
-                    callback.onSuccess(movies);
-                } else {
-                    callback.onError();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieListResult> call, Throwable t) {
-                callback.onError();
-            }
-        });
-    }
-
-    public void searchMovie(final GetMoviesCallback callback, final String query) {
-        mMovieDbApi.searchMovie(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API, query)
-                .enqueue(new Callback<MovieListResult>() {
-
+                .subscribeOn(Schedulers.io())
+                .cache()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MovieListResult>() {
                     @Override
-                    public void onResponse(Call<MovieListResult> call, Response<MovieListResult> response) {
-                        if (response.isSuccessful()) {
-                            callback.onSuccess(response.body().results);
+                    public void accept(MovieListResult movieListResult) throws Exception {
+                        if (movieListResult != null && movieListResult.results != null) {
+                            List<Movie> movies = new MovieFilter().filterByRating(movieListResult.results, minRating);
+                            callback.onSuccess(movies);
                         } else {
                             callback.onError();
                         }
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onFailure(Call<MovieListResult> call, Throwable t) {
+                    public void accept(Throwable throwable) throws Exception {
+                        callback.onError();
+                    }
+                });
+    }
+
+    public void searchMovie(final GetMoviesCallback callback, final String query) {
+        mMovieDbApi.searchMovie(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API, query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MovieListResult>() {
+                    @Override
+                    public void accept(MovieListResult movieListResult) throws Exception {
+                        if (movieListResult != null && movieListResult.results != null) {
+                            callback.onSuccess(movieListResult.results);
+                        } else {
+                            callback.onError();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
                         callback.onError();
                     }
                 });
