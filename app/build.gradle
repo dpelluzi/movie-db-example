@@ -13,13 +13,13 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'String', 'MOVIE_DB_API', '"636c2a1379eb5a19dca20d71b71a3a7d"'
+            buildConfigField 'String', 'MOVIE_DB_API', '"YOUR_API_KEY"'
             buildConfigField 'int', 'MOVIE_DB_API_VER', '3'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'MOVIE_DB_API', '"636c2a1379eb5a19dca20d71b71a3a7d"'
+            buildConfigField 'String', 'MOVIE_DB_API', '"YOUR_API_KEY"'
             buildConfigField 'int', 'MOVIE_DB_API_VER', '3'
         }
     }
