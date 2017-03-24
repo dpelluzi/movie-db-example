@@ -50,6 +50,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         mOnItemClickListener = listener;
     }
 
+    public void clear() {
+        mData.clear();
+        notifyDataSetChanged();
+    }
+
     public interface OnItemClickListener {
         void onItemClicked(Movie movie);
     }

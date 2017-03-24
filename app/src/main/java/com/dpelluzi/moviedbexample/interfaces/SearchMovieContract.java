@@ -1,37 +1,31 @@
 package com.dpelluzi.moviedbexample.interfaces;
 
+
 import com.dpelluzi.moviedbexample.models.Movie;
 
 import java.util.List;
 
-public interface MovieListContract {
+public interface SearchMovieContract {
 
     interface Presenter {
 
         void onViewCreated();
 
-        void onMovieItemClicked(Movie movie);
-
-        void onSearchClicked();
+        void onSearchTextChanged(String searchText);
     }
 
     interface View {
 
         void setupViews();
 
-        void showProgressBar();
-
         void showError();
 
-        void dismissProgressBar();
+        void clearList();
 
         void addMovies(List<Movie> movies);
 
-        void showList();
+        void showLoading();
 
-        void startMovieDetail(Movie movie);
-
-        void startSearchActivity();
+        void dismissLoading();
     }
-
 }

@@ -45,4 +45,9 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     public void onMovieItemClicked(Movie movie) {
         mView.startMovieDetail(movie);
     }
+
+    @Override
+    public void onSearchClicked() {
+        mView.startSearchActivity();
+    }
 }

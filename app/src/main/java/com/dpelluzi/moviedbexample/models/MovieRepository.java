@@ -62,21 +62,21 @@ public class MovieRepository {
         });
     }
 
-    public void getMovieDetail(final GetMovieDetailCallback callback, final int id) {
-        mMovieDbApi.getMovieDetail(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API, id)
-                .enqueue(new Callback<Movie>() {
+    public void searchMovie(final GetMoviesCallback callback, final String query) {
+        mMovieDbApi.searchMovie(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API, query)
+                .enqueue(new Callback<MovieListResult>() {
 
                     @Override
-                    public void onResponse(Call<Movie> call, Response<Movie> response) {
+                    public void onResponse(Call<MovieListResult> call, Response<MovieListResult> response) {
                         if (response.isSuccessful()) {
-                            callback.onSuccess(response.body());
+                            callback.onSuccess(response.body().results);
                         } else {
                             callback.onError();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Movie> call, Throwable t) {
+                    public void onFailure(Call<MovieListResult> call, Throwable t) {
                         callback.onError();
                     }
                 });
@@ -88,12 +88,6 @@ public class MovieRepository {
 
     public interface GetMoviesCallback {
         void onSuccess(List<Movie> movies);
-
-        void onError();
-    }
-
-    public interface GetMovieDetailCallback {
-        void onSuccess(Movie movie);
 
         void onError();
     }
