@@ -1,5 +1,8 @@
-package com.dpelluzi.moviedbexample;
+package com.dpelluzi.moviedbexample.models;
 
+
+import com.dpelluzi.moviedbexample.BuildConfig;
+import com.dpelluzi.moviedbexample.interfaces.MovieDbApi;
 
 import java.util.List;
 
@@ -13,7 +16,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MovieRepository {
 
     private static final String URL_MOVIE_API = "https://api.themoviedb.org";
+    private static final String BASE_URL_IMAGE = "http://image.tmdb.org/t/p/";
+    private static final String POSTER_IMAGE_SIZE = "w500";
+
     private static MovieRepository sRepository;
+
     private MovieDbApi mMovieDbApi;
 
     private MovieRepository() {
@@ -55,8 +62,38 @@ public class MovieRepository {
         });
     }
 
+    public void getMovieDetail(final GetMovieDetailCallback callback, final int id) {
+        mMovieDbApi.getMovieDetail(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API, id)
+                .enqueue(new Callback<Movie>() {
+
+                    @Override
+                    public void onResponse(Call<Movie> call, Response<Movie> response) {
+                        if (response.isSuccessful()) {
+                            callback.onSuccess(response.body());
+                        } else {
+                            callback.onError();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Movie> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
+    }
+
+    public String getImageUrl(String imagePath) {
+        return BASE_URL_IMAGE + POSTER_IMAGE_SIZE + imagePath;
+    }
+
     public interface GetMoviesCallback {
         void onSuccess(List<Movie> movies);
+
+        void onError();
+    }
+
+    public interface GetMovieDetailCallback {
+        void onSuccess(Movie movie);
 
         void onError();
     }

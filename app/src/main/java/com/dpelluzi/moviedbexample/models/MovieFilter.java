@@ -1,4 +1,4 @@
-package com.dpelluzi.moviedbexample;
+package com.dpelluzi.moviedbexample.models;
 
 import java.util.ArrayList;
 import java.util.List;

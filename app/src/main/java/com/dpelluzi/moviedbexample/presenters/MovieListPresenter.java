@@ -1,4 +1,8 @@
-package com.dpelluzi.moviedbexample;
+package com.dpelluzi.moviedbexample.presenters;
+
+import com.dpelluzi.moviedbexample.interfaces.MovieListContract;
+import com.dpelluzi.moviedbexample.models.Movie;
+import com.dpelluzi.moviedbexample.models.MovieRepository;
 
 import java.util.List;
 
@@ -39,6 +43,6 @@ public class MovieListPresenter implements MovieListContract.Presenter {
 
     @Override
     public void onMovieItemClicked(Movie movie) {
-        mView.startMovieDetail(movie.id);
+        mView.startMovieDetail(movie);
     }
 }

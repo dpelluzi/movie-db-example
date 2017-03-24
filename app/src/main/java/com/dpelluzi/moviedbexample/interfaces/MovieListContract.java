@@ -1,4 +1,6 @@
-package com.dpelluzi.moviedbexample;
+package com.dpelluzi.moviedbexample.interfaces;
+
+import com.dpelluzi.moviedbexample.models.Movie;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public interface MovieListContract {
 
         void showList();
 
-        void startMovieDetail(int id);
+        void startMovieDetail(Movie movie);
     }
 
 }

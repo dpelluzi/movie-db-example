@@ -1,5 +1,8 @@
 package com.dpelluzi.moviedbexample;
 
+import com.dpelluzi.moviedbexample.models.Movie;
+import com.dpelluzi.moviedbexample.models.MovieFilter;
+
 import org.junit.Test;
 
 import java.util.Arrays;

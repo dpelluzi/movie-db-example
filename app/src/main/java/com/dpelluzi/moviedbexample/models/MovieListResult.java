@@ -1,4 +1,4 @@
-package com.dpelluzi.moviedbexample;
+package com.dpelluzi.moviedbexample.models;
 
 import com.google.gson.annotations.SerializedName;
 

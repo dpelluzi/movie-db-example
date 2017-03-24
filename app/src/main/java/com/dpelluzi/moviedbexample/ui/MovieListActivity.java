@@ -1,4 +1,4 @@
-package com.dpelluzi.moviedbexample;
+package com.dpelluzi.moviedbexample.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.dpelluzi.moviedbexample.R;
+import com.dpelluzi.moviedbexample.interfaces.MovieListContract;
+import com.dpelluzi.moviedbexample.models.Movie;
+import com.dpelluzi.moviedbexample.presenters.MovieListPresenter;
 
 import java.util.List;
 
@@ -29,6 +34,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
+        ButterKnife.bind(this);
 
         mPresenter = new MovieListPresenter(this);
         mPresenter.onViewCreated();
@@ -36,8 +42,6 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     @Override
     public void setupViews() {
-        ButterKnife.bind(this);
-
         mMovieList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new MovieListAdapter();
         mAdapter.setOnItemClickListener(new MovieListAdapter.OnItemClickListener() {
@@ -75,9 +79,9 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
     }
 
     @Override
-    public void startMovieDetail(int id) {
+    public void startMovieDetail(Movie movie) {
         final Intent intent = new Intent(this, MovieDetailActivity.class);
-        intent.putExtra(MovieDetailActivity.EXTRA_MOVIE_ID, id);
+        intent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
         startActivity(intent);
     }
 

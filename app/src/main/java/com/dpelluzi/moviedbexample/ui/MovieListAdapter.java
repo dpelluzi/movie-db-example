@@ -1,7 +1,5 @@
-package com.dpelluzi.moviedbexample;
+package com.dpelluzi.moviedbexample.ui;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,24 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.dpelluzi.moviedbexample.R;
+import com.dpelluzi.moviedbexample.models.Movie;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
-import butterknife.OnItemLongClick;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {
 
-    public interface OnItemClickListener {
-        void onItemClicked(Movie movie);
-    }
-
     private List<Movie> mData;
     private OnItemClickListener mOnItemClickListener;
-
     public MovieListAdapter() {
         mData = new ArrayList<>();
     }
@@ -54,6 +48,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClicked(Movie movie);
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
