@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item"
+    android:layout_margin="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground">
+    android:background="@drawable/bg_list_item"
+    android:foreground="?android:selectableItemBackground">
 
     <TextView
         android:id="@+id/text_title"
