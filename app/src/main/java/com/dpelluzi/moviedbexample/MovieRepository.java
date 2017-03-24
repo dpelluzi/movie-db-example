@@ -7,19 +7,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieRepository {
 
-    public interface GetMoviesCallback {
-        void onSuccess(List<Movie> movies);
-        void onError();
-    }
-
     private static final String URL_MOVIE_API = "https://api.themoviedb.org";
     private static MovieRepository sRepository;
-
     private MovieDbApi mMovieDbApi;
+
+    private MovieRepository() {
+        final Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(URL_MOVIE_API)
+                .build();
+
+        mMovieDbApi = retrofit.create(MovieDbApi.class);
+    }
 
     public static MovieRepository getInstance() {
         if (sRepository == null) {
@@ -29,26 +34,18 @@ public class MovieRepository {
         return sRepository;
     }
 
-    private MovieRepository() {
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL_MOVIE_API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mMovieDbApi = retrofit.create(MovieDbApi.class);
-    }
-
-    public void getNowPlayingMovies(final GetMoviesCallback callback) {
+    public void getNowPlayingMovies(final GetMoviesCallback callback, final float minRating) {
         mMovieDbApi.getNowPlayingMovies(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API)
                 .enqueue(new Callback<MovieListResult>() {
+
             @Override
             public void onResponse(Call<MovieListResult> call, Response<MovieListResult> response) {
                 if (response.isSuccessful()) {
-                    callback.onSuccess(response.body().results);
+                    List<Movie> movies = new MovieFilter().filterByRating(response.body().results, minRating);
+                    callback.onSuccess(movies);
                 } else {
                     callback.onError();
                 }
-
             }
 
             @Override
@@ -56,6 +53,12 @@ public class MovieRepository {
                 callback.onError();
             }
         });
+    }
+
+    public interface GetMoviesCallback {
+        void onSuccess(List<Movie> movies);
+
+        void onError();
     }
 
 }
