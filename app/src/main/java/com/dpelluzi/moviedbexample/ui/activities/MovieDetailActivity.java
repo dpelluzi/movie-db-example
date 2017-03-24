@@ -1,4 +1,4 @@
-package com.dpelluzi.moviedbexample.ui;
+package com.dpelluzi.moviedbexample.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

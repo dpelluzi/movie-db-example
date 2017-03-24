@@ -13,6 +13,8 @@ public interface MovieListContract {
         void onMovieItemClicked(Movie movie);
 
         void onSearchClicked();
+
+        void loadMoreData();
     }
 
     interface View {

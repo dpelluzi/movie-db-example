@@ -4,8 +4,6 @@ package com.dpelluzi.moviedbexample.models;
 import com.dpelluzi.moviedbexample.BuildConfig;
 import com.dpelluzi.moviedbexample.interfaces.MovieDbApi;
 
-import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -41,17 +39,16 @@ public class MovieRepository {
         return sRepository;
     }
 
-    public void getNowPlayingMovies(final GetMoviesCallback callback, final float minRating) {
-        mMovieDbApi.getNowPlayingMovies(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API)
+    public void getNowPlayingMovies(final GetMoviesCallback callback, final float minRating, int page) {
+        mMovieDbApi.getNowPlayingMovies(BuildConfig.MOVIE_DB_API_VER, BuildConfig.MOVIE_DB_API, page)
                 .subscribeOn(Schedulers.io())
-                .cache()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<MovieListResult>() {
                     @Override
                     public void accept(MovieListResult movieListResult) throws Exception {
-                        if (movieListResult != null && movieListResult.results != null) {
-                            List<Movie> movies = new MovieFilter().filterByRating(movieListResult.results, minRating);
-                            callback.onSuccess(movies);
+                        if (movieListResult != null) {
+                            movieListResult.movies = new MovieFilter().filterByRating(movieListResult.movies, minRating);
+                            callback.onSuccess(movieListResult);
                         } else {
                             callback.onError();
                         }
@@ -71,8 +68,8 @@ public class MovieRepository {
                 .subscribe(new Consumer<MovieListResult>() {
                     @Override
                     public void accept(MovieListResult movieListResult) throws Exception {
-                        if (movieListResult != null && movieListResult.results != null) {
-                            callback.onSuccess(movieListResult.results);
+                        if (movieListResult != null) {
+                            callback.onSuccess(movieListResult);
                         } else {
                             callback.onError();
                         }
@@ -90,7 +87,7 @@ public class MovieRepository {
     }
 
     public interface GetMoviesCallback {
-        void onSuccess(List<Movie> movies);
+        void onSuccess(MovieListResult result);
 
         void onError();
     }

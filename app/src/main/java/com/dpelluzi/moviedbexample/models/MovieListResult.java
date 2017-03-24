@@ -17,9 +17,9 @@ public class MovieListResult {
     public int totalResult;
 
     @SerializedName("results")
-    public List<Movie> results;
+    public List<Movie> movies;
 
     public MovieListResult() {
-        results = new ArrayList<>();
+        movies = new ArrayList<>();
     }
 }

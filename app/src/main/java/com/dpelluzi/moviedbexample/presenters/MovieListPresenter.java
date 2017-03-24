@@ -2,15 +2,16 @@ package com.dpelluzi.moviedbexample.presenters;
 
 import com.dpelluzi.moviedbexample.interfaces.MovieListContract;
 import com.dpelluzi.moviedbexample.models.Movie;
+import com.dpelluzi.moviedbexample.models.MovieListResult;
 import com.dpelluzi.moviedbexample.models.MovieRepository;
-
-import java.util.List;
 
 public class MovieListPresenter implements MovieListContract.Presenter {
 
     private static final float MIN_RATING = 5.0f;
 
     private MovieListContract.View mView;
+    private int mNextPage = 1;
+    private int mTotalPages;
 
     public MovieListPresenter(MovieListContract.View view) {
         mView = view;
@@ -27,10 +28,12 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     private void getMovies() {
         MovieRepository.getInstance().getNowPlayingMovies(new MovieRepository.GetMoviesCallback() {
             @Override
-            public void onSuccess(List<Movie> movies) {
+            public void onSuccess(MovieListResult result) {
+                mNextPage = result.page + 1;
+                mTotalPages = result.totalPages;
                 mView.dismissProgressBar();
                 mView.showList();
-                mView.addMovies(movies);
+                mView.addMovies(result.movies);
             }
 
             @Override
@@ -38,7 +41,7 @@ public class MovieListPresenter implements MovieListContract.Presenter {
                 mView.dismissProgressBar();
                 mView.showError();
             }
-        }, MIN_RATING);
+        }, MIN_RATING, mNextPage);
     }
 
     @Override
@@ -49,5 +52,12 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     @Override
     public void onSearchClicked() {
         mView.startSearchActivity();
+    }
+
+    @Override
+    public void loadMoreData() {
+        if (mNextPage < mTotalPages) {
+            getMovies();
+        }
     }
 }

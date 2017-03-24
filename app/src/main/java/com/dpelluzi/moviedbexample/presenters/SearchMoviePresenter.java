@@ -1,10 +1,8 @@
 package com.dpelluzi.moviedbexample.presenters;
 
 import com.dpelluzi.moviedbexample.interfaces.SearchMovieContract;
-import com.dpelluzi.moviedbexample.models.Movie;
+import com.dpelluzi.moviedbexample.models.MovieListResult;
 import com.dpelluzi.moviedbexample.models.MovieRepository;
-
-import java.util.List;
 
 public class SearchMoviePresenter implements SearchMovieContract.Presenter {
 
@@ -36,10 +34,10 @@ public class SearchMoviePresenter implements SearchMovieContract.Presenter {
     private void searchMovie(String movieTitle) {
         MovieRepository.getInstance().searchMovie(new MovieRepository.GetMoviesCallback() {
             @Override
-            public void onSuccess(List<Movie> movies) {
+            public void onSuccess(MovieListResult result) {
                 mView.dismissLoading();
                 mView.clearList();
-                mView.addMovies(movies);
+                mView.addMovies(result.movies);
             }
 
             @Override

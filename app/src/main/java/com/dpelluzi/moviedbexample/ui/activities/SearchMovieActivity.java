@@ -1,4 +1,4 @@
-package com.dpelluzi.moviedbexample.ui;
+package com.dpelluzi.moviedbexample.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import com.dpelluzi.moviedbexample.R;
 import com.dpelluzi.moviedbexample.interfaces.SearchMovieContract;
 import com.dpelluzi.moviedbexample.models.Movie;
 import com.dpelluzi.moviedbexample.presenters.SearchMoviePresenter;
+import com.dpelluzi.moviedbexample.ui.MovieListAdapter;
 
 import java.util.List;
 

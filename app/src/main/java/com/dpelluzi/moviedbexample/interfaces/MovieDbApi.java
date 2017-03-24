@@ -10,7 +10,8 @@ import retrofit2.http.Query;
 public interface MovieDbApi {
 
     @GET("/{version}/movie/now_playing")
-    Single<MovieListResult> getNowPlayingMovies(@Path("version") int version, @Query("api_key") String apiKey);
+    Single<MovieListResult> getNowPlayingMovies(@Path("version") int version, @Query("api_key") String apiKey,
+                                                @Query("page") int page);
 
     @GET("/{version}/search/movie")
     Single<MovieListResult> searchMovie(@Path("version") int version, @Query("api_key") String apiKey,

@@ -1,4 +1,4 @@
-package com.dpelluzi.moviedbexample.ui;
+package com.dpelluzi.moviedbexample.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import com.dpelluzi.moviedbexample.R;
 import com.dpelluzi.moviedbexample.interfaces.MovieListContract;
 import com.dpelluzi.moviedbexample.models.Movie;
 import com.dpelluzi.moviedbexample.presenters.MovieListPresenter;
+import com.dpelluzi.moviedbexample.ui.EndlessRecyclerViewScrollListener;
+import com.dpelluzi.moviedbexample.ui.MovieListAdapter;
 
 import java.util.List;
 
@@ -44,12 +46,20 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
 
     @Override
     public void setupViews() {
-        mMovieList.setLayoutManager(new LinearLayoutManager(this));
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mMovieList.setLayoutManager(layoutManager);
         mAdapter = new MovieListAdapter();
         mAdapter.setOnItemClickListener(new MovieListAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(Movie movie) {
                 mPresenter.onMovieItemClicked(movie);
+            }
+        });
+        mMovieList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                mPresenter.loadMoreData();
             }
         });
         mMovieList.setAdapter(mAdapter);
