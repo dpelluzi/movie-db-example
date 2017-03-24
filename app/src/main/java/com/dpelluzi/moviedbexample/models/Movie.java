@@ -7,17 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable {
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel in) {
-            return new Movie(in);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
     @SerializedName("id")
     public int id;
     @SerializedName("poster_path")
@@ -28,6 +17,9 @@ public class Movie implements Parcelable {
     public float voteAverage;
     @SerializedName("overview")
     public String overview;
+
+    public Movie() {
+    }
 
     protected Movie(Parcel in) {
         id = in.readInt();
@@ -50,4 +42,16 @@ public class Movie implements Parcelable {
     public int describeContents() {
         return 0;
     }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

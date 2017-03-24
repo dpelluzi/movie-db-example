@@ -9,9 +9,11 @@ public class SearchMoviePresenter implements SearchMovieContract.Presenter {
     private static final int MIN_SEARCH_STRING = 3;
 
     private SearchMovieContract.View mView;
+    private MovieRepository mRepository;
 
-    public SearchMoviePresenter(SearchMovieContract.View view) {
+    public SearchMoviePresenter(SearchMovieContract.View view, MovieRepository repository) {
         mView = view;
+        mRepository = repository;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class SearchMoviePresenter implements SearchMovieContract.Presenter {
     }
 
     private void searchMovie(String movieTitle) {
-        MovieRepository.getInstance().searchMovie(new MovieRepository.GetMoviesCallback() {
+        mRepository.searchMovie(new MovieRepository.GetMoviesCallback() {
             @Override
             public void onSuccess(MovieListResult result) {
                 mView.dismissLoading();

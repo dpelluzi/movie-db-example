@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.dpelluzi.moviedbexample.R;
 import com.dpelluzi.moviedbexample.interfaces.SearchMovieContract;
 import com.dpelluzi.moviedbexample.models.Movie;
+import com.dpelluzi.moviedbexample.models.MovieRepository;
 import com.dpelluzi.moviedbexample.presenters.SearchMoviePresenter;
 import com.dpelluzi.moviedbexample.ui.MovieListAdapter;
 
@@ -38,7 +39,7 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchMovi
         setContentView(R.layout.activity_search_movie);
         ButterKnife.bind(this);
 
-        mPresenter = new SearchMoviePresenter(this);
+        mPresenter = new SearchMoviePresenter(this, MovieRepository.getInstance());
         mPresenter.onViewCreated();
     }
 

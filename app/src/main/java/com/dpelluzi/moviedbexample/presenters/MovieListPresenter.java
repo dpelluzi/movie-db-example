@@ -10,11 +10,13 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     private static final float MIN_RATING = 5.0f;
 
     private MovieListContract.View mView;
+    private MovieRepository mRepository;
     private int mNextPage = 1;
     private int mTotalPages;
 
-    public MovieListPresenter(MovieListContract.View view) {
+    public MovieListPresenter(MovieListContract.View view, MovieRepository movieRepository) {
         mView = view;
+        mRepository = movieRepository;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class MovieListPresenter implements MovieListContract.Presenter {
     }
 
     private void getMovies() {
-        MovieRepository.getInstance().getNowPlayingMovies(new MovieRepository.GetMoviesCallback() {
+        mRepository.getNowPlayingMovies(new MovieRepository.GetMoviesCallback() {
             @Override
             public void onSuccess(MovieListResult result) {
                 mNextPage = result.page + 1;

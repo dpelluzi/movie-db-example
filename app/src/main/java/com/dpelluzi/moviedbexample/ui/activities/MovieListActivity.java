@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.dpelluzi.moviedbexample.R;
 import com.dpelluzi.moviedbexample.interfaces.MovieListContract;
 import com.dpelluzi.moviedbexample.models.Movie;
+import com.dpelluzi.moviedbexample.models.MovieRepository;
 import com.dpelluzi.moviedbexample.presenters.MovieListPresenter;
 import com.dpelluzi.moviedbexample.ui.EndlessRecyclerViewScrollListener;
 import com.dpelluzi.moviedbexample.ui.MovieListAdapter;
@@ -40,7 +41,7 @@ public class MovieListActivity extends AppCompatActivity implements MovieListCon
         setContentView(R.layout.activity_movie_list);
         ButterKnife.bind(this);
 
-        mPresenter = new MovieListPresenter(this);
+        mPresenter = new MovieListPresenter(this, MovieRepository.getInstance());
         mPresenter.onViewCreated();
     }
 
